@@ -9,17 +9,28 @@ import SignIn from '../SignIn/SignIn'
 import SignOut from '../SignOut/SignOut'
 import ChangePassword from '../ChangePassword/ChangePassword'
 
+import Home from './../routes/Home'
+import CreateGame from './../routes/GameRoutes/CreateGame'
+import UpdateGame from './../routes/GameRoutes/UpdateGame'
+import IndexGames from './../routes/GameRoutes/IndexGames'
+import DeleteGames from './../routes/GameRoutes/DeleteGame'
+
+import CreateCanvas from './../routes/CanvasRoutes/CreateCanvas'
+
 class App extends Component {
   constructor () {
     super()
 
     this.state = {
       user: null,
-      msgAlerts: []
+      msgAlerts: [],
+      update: 'lol'
     }
   }
 
   setUser = user => this.setState({ user })
+
+  setUpdate = update => this.setState({ update })
 
   clearUser = () => this.setState({ user: null })
 
@@ -28,8 +39,7 @@ class App extends Component {
   }
 
   render () {
-    const { msgAlerts, user } = this.state
-
+    const { msgAlerts, user, update } = this.state
     return (
       <Fragment>
         <Header user={user} />
@@ -53,6 +63,28 @@ class App extends Component {
           )} />
           <AuthenticatedRoute user={user} path='/change-password' render={() => (
             <ChangePassword msgAlert={this.msgAlert} user={user} />
+          )} />
+
+          <Route exact path='/' component={Home} />
+
+          <AuthenticatedRoute user={user} path='/create-games' render={() => (
+            <CreateGame user={user} update={this.setUpdate}/>
+          )} />
+
+          <AuthenticatedRoute user={user} path='/update-game/:id' render={({ match }) => (
+            <UpdateGame user={user} match={match} update={update}/>
+          )} />
+
+          <AuthenticatedRoute user={user} path='/index-games' render={({ match }) => (
+            <IndexGames user={user}/>
+          )} />
+
+          <AuthenticatedRoute user={user} path='/delete-games' render={({ match }) => (
+            <DeleteGames user={user} />
+          )} />
+
+          <AuthenticatedRoute user={user} path='/create-canvas' render={() => (
+            <CreateCanvas user={user} />
           )} />
         </main>
       </Fragment>
