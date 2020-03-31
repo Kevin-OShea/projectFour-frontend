@@ -16,7 +16,7 @@ import IndexGames from './../routes/GameRoutes/IndexGames'
 import DeleteGames from './../routes/GameRoutes/DeleteGame'
 import ShowGame from './../routes/GameRoutes/ShowGame'
 
-import CreateCanvas from './../routes/CanvasRoutes/CreateCanvas'
+import GamePage from './../routes/CanvasRoutes/GamePage'
 
 class App extends Component {
   constructor () {
@@ -88,8 +88,8 @@ class App extends Component {
             <DeleteGames user={user} match={match}/>
           )} />
 
-          <AuthenticatedRoute user={user} exact path='/create-canvas' render={() => (
-            <CreateCanvas user={user} />
+          <AuthenticatedRoute user={user} exact path='/play-game' render={() => (
+            <GamePage user={user} />
           )} />
         </main>
       </Fragment>
