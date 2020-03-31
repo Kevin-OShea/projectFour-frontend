@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 // Import Axios:
 import axios from 'axios'
@@ -12,7 +12,7 @@ class IndexGames extends Component {
     super()
 
     this.state = {
-      movies: null
+      games: null
     }
   }
 
@@ -41,9 +41,7 @@ class IndexGames extends Component {
       // Otherwise, display the movies
       const gamesList = games.map(games => (
         <li key={games._id}>
-          <h1>{games._id}</h1>
-          <h2>{games.score}</h2>
-          <h2>{games.completed}</h2>
+          <Link to={`/show-game/${games._id}`}>{games._id}</Link>
         </li>
       ))
 
