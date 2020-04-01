@@ -1,34 +1,61 @@
-import React, { Component } from 'react'
-import CreateCanvas from './CreateCanvas'
-class Animations extends Component {
-  constructor (props) {
-    super(props)
-    this.state = { yCord: 0 }
-    this.updateAnimationState = this.updateAnimationState.bind(this)
-  }
+import React, { PureComponent } from 'react'
+import Konva from 'konva'
+import { Rect } from 'react-konva'
 
+// const MIN_X = 12
+// const MIN_Y = 12
+// const MAX_X = 800 - MIN_X
+// const MAX_Y = 600 - MIN_Y
+// const SPEED = 30
+// initilize to zero and base
+export default class Ball extends PureComponent {
+  state = {
+    color: Konva.Util.getRandomColor(),
+    x: Math.floor(Math.random() * 700),
+    y: 0,
+    timeout: 100
+  }
   componentDidMount () {
-    this.rAF = requestAnimationFrame(this.updateAnimationState)
+    this.move()
   }
 
-  updateAnimationState () {
-    let num = this.state.yCord
-    if (num === 1000) {
-      num = -1
+  newCoord = (val, delta, max, min) => {
+  }
+
+  animate = () => {
+  }
+
+  click = (event) => {
+    console.log(event.target)
+  }
+
+  move = () => {
+    let { x, y } = this.state
+    if (y === 100) {
+      x = Math.floor(Math.random() * 700)
+      y = 0
     } else {
-      num = num + 1
+      y = y + 5
     }
-    this.setState(prevState => ({ yCord: num }))
-    this.rAF = requestAnimationFrame(this.updateAnimationState)
-  }
-
-  componentWillUnmount () {
-    cancelAnimationFrame(this.rAF)
+    this.setState({ y: y, x: x })
+    this.animationTimeout = setTimeout(this.move, 30)
   }
 
   render () {
-    return <CreateCanvas yCord={this.state.yCord}/>
+    const { x, y } = this.state
+    return (
+      <Rect
+        x={x}
+        y={y}
+        width={100}
+        height={100}
+        fill="red"
+        onClick={this.click}
+      />
+    )
+  }
+
+  componentWillUnmount () {
+    clearTimeout(this.animationTimeout)
   }
 }
-
-export default Animations

@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
+import { Stage, Layer } from 'react-konva'
 import Animations from './Animations'
 class GamePage extends Component {
   render () {
     return (
       <div>
-        <Animations> </Animations>
+        <Stage width={800} height={1000}>
+          <Layer>
+            <Animations> </Animations>
+          </Layer>
+        </Stage>
       </div>
     )
   }
