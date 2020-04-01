@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Stage, Layer } from 'react-konva'
 import Animations from './Animations'
 class GamePage extends Component {
   constructor () {
@@ -9,14 +8,18 @@ class GamePage extends Component {
       score: 0
     }
   }
+
+  setScore = (score) => this.setState({ score })
+
+  setReady = (readyAll) => this.setState({ readyAll })
+  getReady = () => this.state.readyAll
+
+  click = click => console.log('CLICK')
+
   render () {
     return (
       <div>
-        <Stage width={800} height={700} >
-          <Layer>
-            <Animations> </Animations>
-          </Layer>
-        </Stage>
+        <Animations setScore={this.setScore}/>
       </div>
     )
   }
