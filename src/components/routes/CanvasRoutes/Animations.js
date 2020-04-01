@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import Konva from 'konva'
+// import Konva from 'konva'
 import { Rect } from 'react-konva'
 
 // const MIN_X = 12
@@ -10,11 +10,14 @@ import { Rect } from 'react-konva'
 // initilize to zero and base
 export default class Ball extends PureComponent {
   state = {
-    color: Konva.Util.getRandomColor(),
+    color: 'red',
     x: Math.floor(Math.random() * 700),
     y: 0,
-    timeout: 100
+    timeout: 100,
+    score: 0,
+    rect: null
   }
+
   componentDidMount () {
     this.move()
   }
@@ -26,14 +29,32 @@ export default class Ball extends PureComponent {
   }
 
   click = (event) => {
-    console.log(event.target)
+    this.setState({ rect: event.target })
+    const data = event.target.getAttrs()
+    let { score } = this.state
+    if (data.fill === 'red') {
+      event.target.setAttrs({
+        fill: 'blue'
+      })
+      score = score + 1
+      this.setState({ score: score })
+    } else {
+      console.log('Cant click!')
+    }
+  }
+
+  checkPos = (event) => {
+    console.log('hello')
   }
 
   move = () => {
     let { x, y } = this.state
-    if (y === 100) {
+    const { score, rect } = this.state
+    console.log(score)
+    if (y === 800) {
       x = Math.floor(Math.random() * 700)
       y = 0
+      rect.setAttrs({ fill: 'red' })
     } else {
       y = y + 5
     }
@@ -49,8 +70,10 @@ export default class Ball extends PureComponent {
         y={y}
         width={100}
         height={100}
-        fill="red"
+        opacity={1}
+        fill='red'
         onClick={this.click}
+        position={this.checkPos}
       />
     )
   }
