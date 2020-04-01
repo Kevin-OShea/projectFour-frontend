@@ -5,21 +5,24 @@ class GamePage extends Component {
     super()
 
     this.state = {
-      score: 0
+      score: 0,
+      over: false
     }
   }
 
   setScore = (score) => this.setState({ score })
 
-  setReady = (readyAll) => this.setState({ readyAll })
-  getReady = () => this.state.readyAll
+  setGameOver = (over) => this.setState({ over })
 
   click = click => console.log('CLICK')
 
   render () {
+    const update = {
+      props: this.props
+    }
     return (
       <div>
-        <Animations setScore={this.setScore}/>
+        <Animations setScore={this.setScore} update={update}/>
       </div>
     )
   }

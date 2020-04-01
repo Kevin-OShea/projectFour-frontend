@@ -14,27 +14,13 @@ class CreateGame extends Component {
         player: this.props.user._id,
         completed: false
       },
-      createdGame: null
+      createdGame: null,
+      updated: false
     }
   }
 
-  // a = () => {
-  //   const { update } = this.props
-  //   let i = 0
-  //   while (i < 1) {
-  //     const b = {
-  //       game: {
-  //         score: 100000,
-  //         player: this.props.user._id,
-  //         completed: false
-  //       }
-  //     }
-  //     update(b)
-  //     i++
-  //   }
-  // }
-
   componentDidMount () {
+    const { setGame } = this.props
     axios({
       url: `${apiUrl}/games`,
       method: 'POST',
@@ -42,9 +28,13 @@ class CreateGame extends Component {
         'Authorization': `Bearer ${this.props.user.token}`
       },
       data: {
-        game: this.state.game }
+        game: this.state.game
+      }
     })
-      .then(res => this.setState({ game: res.data.game, createdGame: res.data.game._id }))
+      .then(res => {
+        this.setState({ game: res.data.game, createdGame: res.data.game._id })
+        setGame(res.data.game._id)
+      })
       .catch(console.error)
   }
 
@@ -52,7 +42,8 @@ class CreateGame extends Component {
     // const { handleChange, handleSubmit } = this
     let display
     if (this.state.createdGame) {
-      display = <Redirect to={`/update-game/${this.state.createdGame}`}/>
+      // display = <Redirect to={`/update-game/${this.state.createdGame}`}/>
+      display = <Redirect to={'/play-game'}/>
     } else {
       display = (<p>...Loading</p>)
     }

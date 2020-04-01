@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react'
+// import { Redirect } from 'react-router-dom'
 // import Konva from 'konva'
 import { Rect, Stage, Layer } from 'react-konva'
+import axios from 'axios'
+import apiUrl from '../../../apiConfig'
 
 // const MIN_X = 12
 // const MIN_Y = 12
@@ -71,8 +74,30 @@ export default class Animations extends PureComponent {
 
   endGame = () => {
     clearInterval(this.state.animation)
+    console.log(this.props)
+    const data = {
+      game: {
+        score: this.state.score,
+        player: this.props.update.props.user._id,
+        completed: true
+      }
+    }
+    console.log(this.props.update.props.gameId)
+    axios({
+      url: `${apiUrl}/games/${this.props.update.props.gameId}`,
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${this.props.update.props.user.token}`
+      },
+      data
+    })
+      .then(res => {
+        // return (<Redirect to={'/index-games'}/>)
+        console.log('updated!')
+      })
+      .catch(console.error)
   }
-
+  // change this so its not checking every milisecond!
   move = () => {
     let { y, speed, x1, x2, x3, count, colorOne, colorTwo, colorThree, strike } = this.state
     y = y + speed
@@ -98,7 +123,6 @@ export default class Animations extends PureComponent {
       x2 = Math.floor(Math.random() * 800)
       x3 = Math.floor(Math.random() * 800)
     }
-    console.log(strike)
     if (strike === 3) {
       this.endGame()
     } else {

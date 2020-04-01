@@ -49,6 +49,7 @@ class IndexGames extends Component {
   render () {
     // Destructure things from state:
     const { game } = this.state
+    console.log(game)
     let gameDisplay
     // 3 states:
     // if movies is `null`, we are loading
@@ -58,6 +59,10 @@ class IndexGames extends Component {
       gameDisplay = <Redirect to={'/index-games'}/>
     } else if (this.props.user._id === game.owner) {
       // Otherwise, display the movies
+      let completed = 'NO'
+      if (game.completed) {
+        completed = 'YES'
+      }
       gameDisplay = (
         <div>
           <h1>Game Id:</h1>
@@ -65,11 +70,15 @@ class IndexGames extends Component {
           <h1>Game Score:</h1>
           <h3>{game.score}</h3>
           <h1>Game Finished:</h1>
-          <h3>{game.completed}</h3>
+          <h3>{completed}</h3>
           <button onClick={this.delete}>Delete Game</button>
         </div>
       )
     } else {
+      let completed = 'NO'
+      if (game.completed) {
+        completed = 'YES'
+      }
       gameDisplay = (
         <div>
           <h1>Game Id:</h1>
@@ -77,7 +86,7 @@ class IndexGames extends Component {
           <h1>Game Score:</h1>
           <h3>{game.score}</h3>
           <h1>Game Finished:</h1>
-          <h3>{game.completed}</h3>
+          <h3>{completed}</h3>
         </div>
       )
     }

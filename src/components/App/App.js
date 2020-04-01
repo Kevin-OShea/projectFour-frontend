@@ -25,11 +25,15 @@ class App extends Component {
     this.state = {
       user: null,
       msgAlerts: [],
-      update: 'lol'
+      update: 'lol',
+      gameId: 0
     }
   }
 
   setUser = user => this.setState({ user })
+
+  setGame = gameId => this.setState({ gameId })
+  getGame = gameId => this.setState({ gameId })
 
   setUpdate = update => this.setState({ update })
 
@@ -40,7 +44,7 @@ class App extends Component {
   }
 
   render () {
-    const { msgAlerts, user, update } = this.state
+    const { msgAlerts, user, update, gameId } = this.state
     return (
       <Fragment>
         <Header user={user} />
@@ -69,7 +73,7 @@ class App extends Component {
           <Route exact path='/' component={Home} />
 
           <AuthenticatedRoute user={user} exact path='/create-games' render={() => (
-            <CreateGame user={user} update={this.setUpdate}/>
+            <CreateGame user={user} update={this.setUpdate} setGame={this.setGame}/>
           )} />
 
           <AuthenticatedRoute user={user} exact path='/update-game/:id' render={({ match }) => (
@@ -89,7 +93,7 @@ class App extends Component {
           )} />
 
           <AuthenticatedRoute user={user} exact path='/play-game' render={() => (
-            <GamePage user={user} />
+            <GamePage user={user} gameId={gameId}/>
           )} />
         </main>
       </Fragment>
