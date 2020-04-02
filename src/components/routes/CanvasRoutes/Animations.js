@@ -28,6 +28,7 @@ export default class Animations extends PureComponent {
     count: 0,
     strike: 0,
     animation: null,
+    gameOver: false,
     renderAnimation: true
   }
 
@@ -53,24 +54,7 @@ export default class Animations extends PureComponent {
     this.setState({ colorOne: colorOne, colorTwo: colorTwo, colorThree: colorThree })
   }
 
-  reset = () => {
-    this.setState({
-      colorOne: 'red',
-      colorTwo: 'pink',
-      colorThree: 'maroon',
-      x1: Math.floor(Math.random() * 800),
-      x2: Math.floor(Math.random() * 800),
-      x3: Math.floor(Math.random() * 800),
-      y: 0,
-      speed: 1,
-      score: 0,
-      ready: false,
-      count: 0,
-      strike: 0
-    })
-  }
-
-  heightCheck = () => {
+  heightCheck = (y, speed, count) => {
     let { x1, x2, x3, colorOne, colorTwo, colorThree, strike } = this.state
     if (colorOne === 'red') {
       strike = strike + 1
@@ -87,10 +71,35 @@ export default class Animations extends PureComponent {
     x1 = Math.floor(Math.random() * 800)
     x2 = Math.floor(Math.random() * 800)
     x3 = Math.floor(Math.random() * 800)
+    // three checks (1,2) (1,3) (2,3)
+    let correctDistance = false
+    while (correctDistance === false) {
+      const distOne = Math.abs(x1 - x2)
+      const distTwo = Math.abs(x1 - x3)
+      const distThree = Math.abs(x2 - x3)
+
+      if (distOne < 100) {
+        x1 = Math.floor(Math.random() * 800)
+        continue
+      }
+
+      if (distTwo < 100) {
+        x2 = Math.floor(Math.random() * 800)
+        continue
+      }
+
+      if (distThree < 100) {
+        x3 = Math.floor(Math.random() * 800)
+        continue
+      }
+
+      correctDistance = true
+    }
+
     if (strike >= 3) {
       this.endGame()
     } else {
-      this.setState({ x1: x1, x2: x2, x3: x3, colorOne: colorOne, colorTwo: colorTwo, colorThree: colorThree, strike: strike })
+      this.setState({ y: y, speed: speed, count: count, x1: x1, x2: x2, x3: x3, colorOne: colorOne, colorTwo: colorTwo, colorThree: colorThree, strike: strike })
     }
   }
 
@@ -100,8 +109,8 @@ export default class Animations extends PureComponent {
   }
 
   endGame = () => {
+    this.setState({ gameOver: true })
     clearInterval(this.state.animation)
-    console.log(this.props)
     const data = {
       game: {
         score: this.state.score,
@@ -144,15 +153,15 @@ export default class Animations extends PureComponent {
     y = y + speed
     if (y >= 800) {
       y = 0
-      this.heightCheck()
       count = count + 1
       if (speed < 15 && count % 8 === 0) {
         speed = speed + 1
         count = 0
-        console.log(speed)
       }
+      this.heightCheck(y, speed, count)
+    } else {
+      this.setState({ y: y, speed: speed, count: count })
     }
-    this.setState({ y: y, speed: speed, count: count })
   }
 
   render () {

@@ -51,7 +51,7 @@ class IndexGames extends Component {
       gamesDisplay = <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"/>
     } else if (games.length === 0) {
       // If the array of movies is empty, we have no movies to show
-      gamesDisplay = 'No movies yet, go make some!'
+      gamesDisplay = 'No games yet, go make some!'
     } else {
       // Otherwise, display the movies
       const gamesList = games.map(games => (
