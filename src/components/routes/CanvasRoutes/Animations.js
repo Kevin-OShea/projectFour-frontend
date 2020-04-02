@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 // import { Redirect } from 'react-router-dom'
 // import Konva from 'konva'
 import { Rect, Stage, Layer } from 'react-konva'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import apiUrl from '../../../apiConfig'
 
@@ -25,7 +26,8 @@ export default class Animations extends PureComponent {
     ready: false,
     count: 0,
     strike: 0,
-    animation: null
+    animation: null,
+    renderAnimation: true
   }
 
   componentDidMount () {
@@ -67,6 +69,30 @@ export default class Animations extends PureComponent {
     })
   }
 
+  heightCheck = () => {
+    let { x1, x2, x3, colorOne, colorTwo, colorThree, strike } = this.state
+    if (colorOne === 'red') {
+      strike = strike + 1
+    }
+    if (colorTwo === 'pink') {
+      strike = strike + 1
+    }
+    if (colorThree === 'maroon') {
+      strike = strike + 1
+    }
+    colorOne = 'red'
+    colorTwo = 'pink'
+    colorThree = 'maroon'
+    x1 = Math.floor(Math.random() * 800)
+    x2 = Math.floor(Math.random() * 800)
+    x3 = Math.floor(Math.random() * 800)
+    if (strike >= 3) {
+      this.endGame()
+    } else {
+      this.setState({ x1: x1, x2: x2, x3: x3, colorOne: colorOne, colorTwo: colorTwo, colorThree: colorThree, strike: strike })
+    }
+  }
+
   startGame = () => {
     const animation = setInterval(this.move, 0)
     this.setState({ animation: animation })
@@ -92,79 +118,71 @@ export default class Animations extends PureComponent {
       data
     })
       .then(res => {
-        // return (<Redirect to={'/index-games'}/>)
-        console.log('updated!')
+        this.setState({ renderAnimation: false })
       })
       .catch(console.error)
   }
   // change this so its not checking every milisecond!
   move = () => {
-    let { y, speed, x1, x2, x3, count, colorOne, colorTwo, colorThree, strike } = this.state
+    let { y, speed, count } = this.state
+    // console.log(speed)
     y = y + speed
     if (y >= 800) {
-      if (colorOne === 'red') {
-        strike = strike + 1
-      }
-      if (colorTwo === 'pink') {
-        strike = strike + 1
-      }
-      if (colorThree === 'maroon') {
-        strike = strike + 1
-      }
       y = 0
-      colorOne = 'red'
-      colorTwo = 'pink'
-      colorThree = 'maroon'
+      this.heightCheck()
       count = count + 1
-      if (speed < 30 && count % 10 === 0) {
+      if (speed < 15 && count % 8 === 0) {
         speed = speed + 1
+        count = 0
+        console.log(speed)
       }
-      x1 = Math.floor(Math.random() * 800)
-      x2 = Math.floor(Math.random() * 800)
-      x3 = Math.floor(Math.random() * 800)
     }
-    if (strike === 3) {
-      this.endGame()
-    } else {
-      this.setState({ y: y, x1: x1, x2: x2, x3: x3, count: count, colorOne: colorOne, colorTwo: colorTwo, colorThree: colorThree })
-    }
+    this.setState({ y: y, speed: speed, count: count })
   }
 
   render () {
     const { y, x1, x2, x3, colorOne, colorTwo, colorThree } = this.state
-    return (
-      <Stage width={900} height={800} >
-        <Layer>
-          <Rect
-            x={x1}
-            y={y}
-            width={100}
-            height={100}
-            opacity={1}
-            fill={colorOne}
-            onClick={this.clickEvent}
-          />
-          <Rect
-            x={x2}
-            y={y}
-            width={100}
-            height={100}
-            opacity={1}
-            fill={colorTwo}
-            onClick={this.clickEvent}
-          />
-          <Rect
-            x={x3}
-            y={y}
-            width={100}
-            height={100}
-            opacity={1}
-            fill={colorThree}
-            onClick={this.clickEvent}
-          />
-        </Layer>
-      </Stage>
-    )
+    if (this.state.renderAnimation === true) {
+      return (
+        <Stage width={900} height={800} >
+          <Layer>
+            <Rect
+              x={x1}
+              y={y}
+              width={100}
+              height={100}
+              opacity={1}
+              fill={colorOne}
+              onClick={this.clickEvent}
+            />
+            <Rect
+              x={x2}
+              y={y}
+              width={100}
+              height={100}
+              opacity={1}
+              fill={colorTwo}
+              onClick={this.clickEvent}
+            />
+            <Rect
+              x={x3}
+              y={y}
+              width={100}
+              height={100}
+              opacity={1}
+              fill={colorThree}
+              onClick={this.clickEvent}
+            />
+          </Layer>
+        </Stage>
+      )
+    } else {
+      return (
+        <div>
+          <h1>Game Over:</h1>
+          <Link to={`/show-game/${this.props.update.props.gameId}`}>Show Results</Link>
+        </div>)
+    }
   }
 
   componentWillUnmount () {

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
-// import { Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 
 // Import Axios:
 import axios from 'axios'
@@ -72,6 +71,7 @@ class IndexGames extends Component {
           <h1>Game Finished:</h1>
           <h3>{completed}</h3>
           <button onClick={this.delete}>Delete Game</button>
+          <Link to={'/index-games'}>Back To Games</Link>
         </div>
       )
     } else {
@@ -87,6 +87,7 @@ class IndexGames extends Component {
           <h3>{game.score}</h3>
           <h1>Game Finished:</h1>
           <h3>{completed}</h3>
+          <Link to={'/index-games'}>Back To Games</Link>
         </div>
       )
     }
