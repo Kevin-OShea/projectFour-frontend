@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 
 // Import Axios:
 import axios from 'axios'
@@ -7,41 +6,42 @@ import axios from 'axios'
 import apiUrl from '../../../apiConfig'
 import messages from '../../AutoDismissAlert/messages'
 
-class IndexGames extends Component {
+class TopScore extends Component {
   constructor () {
     // Call the constructor on `Component` (the parent class)
     super()
 
     this.state = {
-      games: null
+      games: null,
+      deleted: false
     }
   }
 
   componentDidMount () {
     // Run once, when the component mounts
     // This is where our API request will go
-    console.log(this.props.user._id)
     axios({
-      url: `${apiUrl}/games`,
+      url: `${apiUrl}/scorelists`,
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${this.props.user.token}`
       }
     })
       .then(res => {
-        this.setState({ games: res.data.games })
         const { msgAlert } = this.props
         msgAlert({
-          heading: 'All games',
-          message: messages.indexGameSuccess,
+          heading: 'Showing Game',
+          message: messages.showGamesSuccess,
           variant: 'success'
         })
+        console.log(res)
+        this.setState({ games: res.data.scorelists })
       })
       .catch(() => {
         const { msgAlert } = this.props
         msgAlert({
-          heading: 'Failed to get games',
-          message: messages.indexGameFailure,
+          heading: 'Failed to get Game',
+          message: messages.showGamesFailure,
           variant: 'danger'
         })
         console.error()
@@ -56,14 +56,17 @@ class IndexGames extends Component {
     // if movies is `null`, we are loading
     if (!games) {
       gamesDisplay = <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"/>
-    } else if (games.length === 0) {
-      // If the array of movies is empty, we have no movies to show
-      gamesDisplay = 'No games yet, go make some!'
     } else {
-      // Otherwise, display the movies
       const gamesList = games.map(games => (
         <li key={games._id}>
-          <Link to={`/show-game/${games._id}`}>{games._id}</Link>
+          <div>
+            <h1>Placement</h1>
+            <h2>{games.placement}</h2>
+            <h1>Username:</h1>
+            <h3>{games.username}</h3>
+            <h1>Score:</h1>
+            <h3>{games.score}</h3>
+          </div>
         </li>
       ))
 
@@ -82,4 +85,4 @@ class IndexGames extends Component {
   }
 }
 
-export default IndexGames
+export default TopScore

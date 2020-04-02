@@ -15,6 +15,7 @@ import UpdateGame from './../routes/GameRoutes/UpdateGame'
 import IndexGames from './../routes/GameRoutes/IndexGames'
 import DeleteGames from './../routes/GameRoutes/DeleteGame'
 import ShowGame from './../routes/GameRoutes/ShowGame'
+import TopScores from './../routes/GameRoutes/TopScores'
 
 import GamePage from './../routes/CanvasRoutes/GamePage'
 
@@ -94,6 +95,10 @@ class App extends Component {
 
           <AuthenticatedRoute user={user} exact path='/play-game' render={() => (
             <GamePage user={user} gameId={gameId} msgAlert={this.msgAlert}/>
+          )} />
+
+          <AuthenticatedRoute user={user} exact path='/top-scores' render={() => (
+            <TopScores user={user} gameId={gameId} msgAlert={this.msgAlert}/>
           )} />
         </main>
       </Fragment>

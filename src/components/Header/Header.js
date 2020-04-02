@@ -8,6 +8,7 @@ const authenticatedOptions = (
     <Nav.Link href="#index-games">Show Games Played</Nav.Link>
     <Nav.Link href="#change-password">Change Password</Nav.Link>
     <Nav.Link href="#sign-out">Sign Out</Nav.Link>
+    <Nav.Link href="#/top-scores">Leaderboard</Nav.Link>
   </Fragment>
 )
 
