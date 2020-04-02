@@ -16,10 +16,10 @@ class CreateGame extends Component {
         completed: false
       },
       createdGame: null,
-      updated: false
+      updated: false,
+      createdName: false
     }
   }
-
   componentDidMount () {
     const { setGame } = this.props
     axios({
@@ -56,12 +56,13 @@ class CreateGame extends Component {
   render () {
     // const { handleChange, handleSubmit } = this
     let display
+    console.log(this.state.name)
     if (this.state.createdGame) {
-      // display = <Redirect to={`/update-game/${this.state.createdGame}`}/>
       display = <Redirect to={'/play-game'}/>
     } else {
       display = (<p>...Loading</p>)
     }
+    console.log(this.state.createdName)
 
     return (
       <div>

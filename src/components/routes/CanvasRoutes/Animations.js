@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import apiUrl from '../../../apiConfig'
 import messages from '../../AutoDismissAlert/messages'
+import Form from './../GameRoutes/Form'
 
 // const MIN_X = 12
 // const MIN_Y = 12
@@ -27,12 +28,43 @@ export default class Animations extends PureComponent {
     ready: false,
     count: 0,
     strike: 0,
+    name: '',
     animation: null,
     gameOver: false,
+<<<<<<< HEAD
     renderAnimation: true
+=======
+    renderAnimation: true,
+    renderNext: false
+>>>>>>> development
   }
 
   componentDidMount () {
+    let { x1, x2, x3 } = this.state
+    let correctDistance = false
+    while (correctDistance === false) {
+      const distOne = Math.abs(x1 - x2)
+      const distTwo = Math.abs(x1 - x3)
+      const distThree = Math.abs(x2 - x3)
+
+      if (distOne < 100) {
+        x1 = Math.floor(Math.random() * 800)
+        continue
+      }
+
+      if (distTwo < 100) {
+        x2 = Math.floor(Math.random() * 800)
+        continue
+      }
+
+      if (distThree < 100) {
+        x3 = Math.floor(Math.random() * 800)
+        continue
+      }
+
+      correctDistance = true
+    }
+    this.setState({ x1, x2, x3 })
     this.startGame()
   }
 
@@ -118,7 +150,6 @@ export default class Animations extends PureComponent {
         completed: true
       }
     }
-    console.log(this.props.update.props.gameId)
     axios({
       url: `${apiUrl}/games/${this.props.update.props.gameId}`,
       method: 'PATCH',
@@ -162,6 +193,49 @@ export default class Animations extends PureComponent {
     } else {
       this.setState({ y: y, speed: speed, count: count })
     }
+<<<<<<< HEAD
+=======
+  }
+
+  handleChange = event => {
+    event.persist()
+    this.setState({ name: event.target.value })
+  }
+
+  handleSubmit = event => {
+    event.preventDefault()
+    axios({
+      url: `${apiUrl}/scorelists`,
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.props.update.props.user.token}`
+      },
+      data: {
+        scorelist: {
+          score: this.state.score,
+          username: this.state.name
+        }
+      }
+    })
+      .then(res => {
+        const { msgAlert } = this.props.update.props
+        msgAlert({
+          heading: 'Uploaded Score',
+          message: messages.createGameSuccess,
+          variant: 'success'
+        })
+        this.setState({ renderNext: true })
+      })
+      .catch(error => {
+        const { msgAlert } = this.props.update.props
+        msgAlert({
+          heading: error,
+          message: messages.createGameFailure,
+          variant: 'danger'
+        })
+        console.error()
+      })
+>>>>>>> development
   }
 
   render () {
@@ -200,12 +274,25 @@ export default class Animations extends PureComponent {
           </Layer>
         </Stage>
       )
-    } else {
+    } else if (this.state.renderNext === false) {
+      // <Link to={`/show-game/${this.props.update.props.gameId}`}>Show Results</Link>
       return (
         <div>
           <h1>Game Over:</h1>
-          <Link to={`/show-game/${this.props.update.props.gameId}`}>Show Results</Link>
+          <h2>Post your score</h2>
+          <Form
+            name={this.state.name}
+            handleChange={this.handleChange}
+            handleSubmit={this.handleSubmit}
+          />
         </div>)
+    } else {
+      return (
+        <div>
+          <h1>Show Game Results</h1>
+          <Link to={`/show-game/${this.props.update.props.gameId}`}>Show Results</Link>
+        </div>
+      )
     }
   }
 
