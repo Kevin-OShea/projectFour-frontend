@@ -31,12 +31,8 @@ export default class Animations extends PureComponent {
     name: '',
     animation: null,
     gameOver: false,
-<<<<<<< HEAD
-    renderAnimation: true
-=======
     renderAnimation: true,
     renderNext: false
->>>>>>> development
   }
 
   componentDidMount () {
@@ -193,8 +189,6 @@ export default class Animations extends PureComponent {
     } else {
       this.setState({ y: y, speed: speed, count: count })
     }
-<<<<<<< HEAD
-=======
   }
 
   handleChange = event => {
@@ -235,7 +229,6 @@ export default class Animations extends PureComponent {
         })
         console.error()
       })
->>>>>>> development
   }
 
   render () {
