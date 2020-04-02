@@ -5,6 +5,7 @@ import { Rect, Stage, Layer } from 'react-konva'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import apiUrl from '../../../apiConfig'
+import messages from '../../AutoDismissAlert/messages'
 
 // const MIN_X = 12
 // const MIN_Y = 12
@@ -118,9 +119,23 @@ export default class Animations extends PureComponent {
       data
     })
       .then(res => {
+        const { msgAlert } = this.props.update.props
+        msgAlert({
+          heading: 'Updated Game',
+          message: messages.updateGameSuccess,
+          variant: 'success'
+        })
         this.setState({ renderAnimation: false })
       })
-      .catch(console.error)
+      .catch(() => {
+        const { msgAlert } = this.props.update.props
+        msgAlert({
+          heading: 'Failed to Update Game',
+          message: messages.updateGameFailure,
+          variant: 'danger'
+        })
+        console.error()
+      })
   }
   // change this so its not checking every milisecond!
   move = () => {

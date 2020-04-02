@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 // Import apiConfig:
 import apiUrl from '../../../apiConfig'
+import messages from '../../AutoDismissAlert/messages'
 
 class IndexGames extends Component {
   constructor () {
@@ -22,8 +23,22 @@ class IndexGames extends Component {
     axios(`${apiUrl}/games`)
       .then(res => {
         this.setState({ games: res.data.games })
+        const { msgAlert } = this.props
+        msgAlert({
+          heading: 'All games',
+          message: messages.indexGameSuccess,
+          variant: 'success'
+        })
       })
-      .catch(console.error)
+      .catch(() => {
+        const { msgAlert } = this.props
+        msgAlert({
+          heading: 'Failed to get games',
+          message: messages.indexGameFailure,
+          variant: 'danger'
+        })
+        console.error()
+      })
   }
 
   render () {

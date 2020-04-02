@@ -5,6 +5,7 @@ import { Redirect, Link } from 'react-router-dom'
 import axios from 'axios'
 // Import apiConfig:
 import apiUrl from '../../../apiConfig'
+import messages from '../../AutoDismissAlert/messages'
 
 class IndexGames extends Component {
   constructor () {
@@ -27,8 +28,24 @@ class IndexGames extends Component {
         'Authorization': `Bearer ${this.props.user.token}`
       }
     })
-      .then(res => this.setState({ game: res.data.game }))
-      .catch(console.error)
+      .then(res => {
+        const { msgAlert } = this.props
+        msgAlert({
+          heading: 'Showing Game',
+          message: messages.showGamesSuccess,
+          variant: 'success'
+        })
+        this.setState({ game: res.data.game })
+      })
+      .catch(() => {
+        const { msgAlert } = this.props
+        msgAlert({
+          heading: 'Failed to get Game',
+          message: messages.showGamesFailure,
+          variant: 'danger'
+        })
+        console.error()
+      })
   }
 
   delete = (event) => {

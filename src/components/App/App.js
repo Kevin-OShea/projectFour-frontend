@@ -73,27 +73,27 @@ class App extends Component {
           <Route exact path='/' component={Home} />
 
           <AuthenticatedRoute user={user} exact path='/create-games' render={() => (
-            <CreateGame user={user} update={this.setUpdate} setGame={this.setGame}/>
+            <CreateGame user={user} update={this.setUpdate} setGame={this.setGame} msgAlert={this.msgAlert}/>
           )} />
 
           <AuthenticatedRoute user={user} exact path='/update-game/:id' render={({ match }) => (
-            <UpdateGame user={user} match={match} update={update}/>
+            <UpdateGame user={user} match={match} update={update} msgAlert={this.msgAlert}/>
           )} />
 
           <AuthenticatedRoute user={user} exact path='/index-games' render={({ match }) => (
-            <IndexGames user={user}/>
+            <IndexGames user={user} msgAlert={this.msgAlert}/>
           )} />
 
           <AuthenticatedRoute user={user} exact path='/show-game/:id' render={({ match }) => (
-            <ShowGame user={user} match={match}/>
+            <ShowGame user={user} match={match} msgAlert={this.msgAlert}/>
           )} />
 
           <AuthenticatedRoute user={user} exact path='/delete-games' render={({ match }) => (
-            <DeleteGames user={user} match={match}/>
+            <DeleteGames user={user} match={match} msgAlert={this.msgAlert}/>
           )} />
 
           <AuthenticatedRoute user={user} exact path='/play-game' render={() => (
-            <GamePage user={user} gameId={gameId}/>
+            <GamePage user={user} gameId={gameId} msgAlert={this.msgAlert}/>
           )} />
         </main>
       </Fragment>
