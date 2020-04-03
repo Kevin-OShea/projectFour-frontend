@@ -49,20 +49,17 @@ class CreateGame extends Component {
           message: messages.createGameFailure,
           variant: 'danger'
         })
-        console.error()
       })
   }
 
   render () {
     // const { handleChange, handleSubmit } = this
     let display
-    console.log(this.state.name)
     if (this.state.createdGame) {
       display = <Redirect to={'/play-game'}/>
     } else {
       display = (<p>...Loading</p>)
     }
-    console.log(this.state.createdName)
 
     return (
       <div>

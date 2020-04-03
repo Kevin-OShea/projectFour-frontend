@@ -44,7 +44,6 @@ class IndexGames extends Component {
           message: messages.showGamesFailure,
           variant: 'danger'
         })
-        console.error()
       })
   }
 
@@ -59,13 +58,19 @@ class IndexGames extends Component {
       .then(() => {
         this.setState({ deleted: true })
       })
-      .catch(console.error)
+      .catch(() => {
+        const { msgAlert } = this.props
+        msgAlert({
+          heading: 'Failed to get Game',
+          message: messages.showGamesFailure,
+          variant: 'danger'
+        })
+      })
   }
 
   render () {
     // Destructure things from state:
     const { game } = this.state
-    console.log(game)
     let gameDisplay
     // 3 states:
     // if movies is `null`, we are loading

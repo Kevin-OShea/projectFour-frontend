@@ -34,7 +34,6 @@ class TopScore extends Component {
           message: messages.showGamesSuccess,
           variant: 'success'
         })
-        console.log(res)
         this.setState({ games: res.data.scorelists })
       })
       .catch(() => {
@@ -44,7 +43,6 @@ class TopScore extends Component {
           message: messages.showGamesFailure,
           variant: 'danger'
         })
-        console.error()
       })
   }
 

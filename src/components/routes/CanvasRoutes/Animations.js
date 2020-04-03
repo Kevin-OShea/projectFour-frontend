@@ -170,13 +170,12 @@ export default class Animations extends PureComponent {
           message: messages.updateGameFailure,
           variant: 'danger'
         })
-        console.error()
       })
   }
   // change this so its not checking every milisecond!
   move = () => {
     let { y, speed, count } = this.state
-    // console.log(speed)
+    // (speed)
     y = y + speed
     if (y >= 800) {
       y = 0
@@ -227,7 +226,6 @@ export default class Animations extends PureComponent {
           message: messages.createGameFailure,
           variant: 'danger'
         })
-        console.error()
       })
   }
 

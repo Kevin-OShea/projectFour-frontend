@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 
 import apiUrl from '../../../apiConfig'
+import messages from '../../AutoDismissAlert/messages'
 // import Layout from '../shared/Layout'
 
 class UpdateGame extends Component {
@@ -21,18 +22,25 @@ class UpdateGame extends Component {
       }
     })
       .then(res => this.setState({ game: res.data.game }))
-      .catch(console.error)
+      .catch(() => {
+        const { msgAlert } = this.props
+        msgAlert({
+          heading: 'Failed to get Game',
+          message: messages.showGamesFailure,
+          variant: 'danger'
+        })
+      })
   }
 
   componentDidUpdate () {
     // const newGame = this.props.update
     const oldGame = this.state.game
-    // console.log('1')
-    // console.log(newGame)
-    // console.log('2')
-    // console.log(this.props.update)
-    // console.log('3')
-    // console.log(this.props)
+    // ('1')
+    // (newGame)
+    // ('2')
+    // (this.props.update)
+    // ('3')
+    // (this.props)
     const b = {
       game: {
         score: 10000000,

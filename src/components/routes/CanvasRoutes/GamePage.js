@@ -14,8 +14,6 @@ class GamePage extends Component {
 
   setGameOver = (over) => this.setState({ over })
 
-  click = click => console.log('CLICK')
-
   render () {
     const update = {
       props: this.props

@@ -20,7 +20,6 @@ class IndexGames extends Component {
   componentDidMount () {
     // Run once, when the component mounts
     // This is where our API request will go
-    console.log(this.props.user._id)
     axios({
       url: `${apiUrl}/games`,
       method: 'GET',
@@ -44,7 +43,6 @@ class IndexGames extends Component {
           message: messages.indexGameFailure,
           variant: 'danger'
         })
-        console.error()
       })
   }
 
