@@ -24,7 +24,7 @@ const {
   choosePort,
   createCompiler,
   prepareProxy,
-  prepareUrls,
+  prepareUrls
 } = require('react-dev-utils/WebpackDevServerUtils')
 const openBrowser = require('react-dev-utils/openBrowser')
 const paths = require('../config/paths')
@@ -44,18 +44,18 @@ const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 7165
 const HOST = process.env.HOST || '0.0.0.0'
 
 if (process.env.HOST) {
-  (
+  console.log(
     chalk.cyan(
       `Attempting to bind to HOST environment variable: ${chalk.yellow(
         chalk.bold(process.env.HOST)
       )}`
     )
   )
-  (
+  console.log(
     'If this was unintentional, check that you haven\'t mistakenly set it in your shell.'
   )
-  (`Learn more here: ${chalk.yellow('http://bit.ly/2mwWSwH')}`)
-  ()
+  console.log(`Learn more here: ${chalk.yellow('http://bit.ly/2mwWSwH')}`)
+  console.log()
 }
 
 // We attempt to use the default port but if it is busy, we offer the user to
@@ -83,17 +83,17 @@ choosePort(HOST, DEFAULT_PORT)
     // Launch WebpackDevServer.
     devServer.listen(port, HOST, err => {
       if (err) {
-        return (err)
+        return console.log(err)
       }
       if (isInteractive) {
         clearConsole()
       }
-      (chalk.cyan('Starting the development server...\n'))
+      console.log(chalk.cyan('Starting the development server...\n'))
       openBrowser(urls.localUrlForBrowser)
     });
 
-    ['SIGINT', 'SIGTERM'].forEach(function(sig) {
-      process.on(sig, function() {
+    ['SIGINT', 'SIGTERM'].forEach(function (sig) {
+      process.on(sig, function () {
         devServer.close()
         process.exit()
       })
@@ -101,7 +101,7 @@ choosePort(HOST, DEFAULT_PORT)
   })
   .catch(err => {
     if (err && err.message) {
-      (err.message)
+      console.log(err.message)
     }
     process.exit(1)
   })
